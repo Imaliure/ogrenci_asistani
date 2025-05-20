@@ -26,6 +26,7 @@ class FeedbackRequest(BaseModel):
     answer: str
     satisfied: bool
     original_question: str
+    alt_answer: str | None = None
 
 
 @app.post("/ask")
@@ -34,7 +35,7 @@ def ask_question(request: QuestionRequest):
 
     user_input = request.question.strip()
     if not is_technical_question(user_input, model, faiss_index, embedding_matrix, questions):
-        return {"message": "Bu soru teknik bir soru değil. Lütfen teknik bir soru sorun."}
+        return {"answer": "Bu soru teknik bir soru değil. Lütfen teknik bir soru sorun."}
 
     preprocessed = preprocess_text(user_input)
     best_index, best_score, top_question = get_best_match(preprocessed, model, faiss_index, embedding_matrix, questions)
@@ -103,15 +104,15 @@ def feedback(request: FeedbackRequest):
     else:
         return {"message": "Alternatif açıklama oluşturulamadı."}
 
-    # Alternatif açıklama da yeterli değilse öğretmene mail gönder
+@app.post("/feedback2")
+def feedback2(request: FeedbackRequest):
+    if request.satisfied:
+        return {"message": "Geri bildiriminiz için teşekkür ederiz!"}
+
     send_email_to_teacher(
-        subject="Öğrenci Anlamadı - Müdahale Gerekli",
-        body=f"Soru: {request.user_input}\n\n"
-             f"İlk Cevap: {request.answer}\n\n"
-             f"Alternatif Açıklama: {alt_answer}"
+        subject="Alternatif Açıklama da Yetersiz - Acil Müdahale Gerekli",
+        body=f"Kullanıcı şu soruyu anlamadı: {request.user_input}\n\n"
+             f"ilk Cevap: {request.answer}\n\nAlternatif Açıklama: {request.alt_answer}"
     )
 
-    return {
-        "message": "Alternatif açıklama üretildi ve eğitmene iletildi.",
-        "alternative_answer": alt_answer
-    }
+    return {"message": "Alternatif açıklama da yeterli olmadı. Eğitmen bilgilendirildi."}
