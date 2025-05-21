@@ -13,9 +13,6 @@ from utils.email_helper import send_email_to_teacher
 
 app = FastAPI()
 
-# Uygulama başlatıldığında verileri yükle
-questions, embeddings, answers, alt_answers, faiss_index, embedding_matrix, model = load_data_from_airtable()
-
 
 class QuestionRequest(BaseModel):
     question: str
@@ -31,9 +28,11 @@ class FeedbackRequest(BaseModel):
 
 @app.post("/ask")
 def ask_question(request: QuestionRequest):
-    global questions, embeddings, answers, alt_answers, faiss_index, embedding_matrix, model
-
     user_input = request.question.strip()
+    
+    # Verileri sadece ihtiyaç anında yükle
+    questions, embeddings, answers, alt_answers, faiss_index, embedding_matrix, model = load_data_from_airtable()
+
     if not is_technical_question(user_input, model, faiss_index, embedding_matrix, questions):
         return {"answer": "Bu soru teknik bir soru değil. Lütfen teknik bir soru sorun."}
 
@@ -52,7 +51,6 @@ def ask_question(request: QuestionRequest):
     elif best_score >= 0.4 and top_question.strip().lower() != preprocessed.strip().lower():
         answer = get_openai_response(user_input)
         save_to_airtable(preprocessed, answer, model)
-        questions, embeddings, answers, alt_answers, faiss_index, embedding_matrix, model = load_data_from_airtable()
         return {
             "top_question": top_question,
             "similarity": float(best_score),
@@ -79,15 +77,14 @@ def ask_question(request: QuestionRequest):
 
 @app.post("/feedback")
 def feedback(request: FeedbackRequest):
-    global questions, embeddings, answers, alt_answers, faiss_index, embedding_matrix, model
-
     if request.satisfied:
         return {"message": "Geri bildiriminiz için teşekkür ederiz!"}
+
+    questions, embeddings, answers, alt_answers, faiss_index, embedding_matrix, model = load_data_from_airtable()
 
     preprocessed = preprocess_text(request.user_input)
     best_index, _, top_question = get_best_match(preprocessed, model, faiss_index, embedding_matrix, questions)
 
-    # Alternatif cevap veritabanında varsa onu döndür
     alt_answer = alt_answers[best_index]
     if alt_answer:
         return {
@@ -95,14 +92,14 @@ def feedback(request: FeedbackRequest):
             "alternative_answer": alt_answer
         }
 
-    # Yoksa OpenAI'den üret
     alt_answer = get_openai_response("Bu soruyu farklı bir şekilde açıkla: " + request.user_input)
     updated = update_alternative_answer_in_airtable(top_question, alt_answer)
 
     if updated:
-        questions, embeddings, answers, alt_answers, faiss_index, embedding_matrix, model = load_data_from_airtable()
+        return {"message": "Alternatif açıklama oluşturuldu.", "alternative_answer": alt_answer}
     else:
         return {"message": "Alternatif açıklama oluşturulamadı."}
+
 
 @app.post("/feedback2")
 def feedback2(request: FeedbackRequest):
