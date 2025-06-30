@@ -1,3 +1,4 @@
+# File: services/openai_service.py
 import os
 import openai
 from dotenv import load_dotenv
