@@ -1,3 +1,4 @@
+# chroma_setup.py
 import json
 import uuid
 from chromadb import PersistentClient

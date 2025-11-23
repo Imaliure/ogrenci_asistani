@@ -1,0 +1,118 @@
+body {
+    background: #f2f2f2;
+    font-family: Arial;
+    display: flex;
+    justify-content: center;
+    padding-top: 40px;
+}
+
+.container {
+    width: 480px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #ccc;
+}
+
+h2 {
+    text-align: center;
+}
+
+.chat-box {
+    height: 460px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+.message {
+    padding: 10px;
+    margin: 10px 0;
+    max-width: 80%;
+    border-radius: 12px;
+}
+
+.user {
+    background: #4f8cff;
+    color: white;
+    margin-left: auto;
+}
+
+.bot {
+    background: #ececec;
+    color: #333;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 10px 20px;
+    background: #4f8cff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #3d73d9;
+}
+
+.quiz-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.quiz-btn:hover {
+    background: #218838;
+}
+
+/* Quiz container */
+#quizContainer {
+    background: #fff;
+    padding: 20px;
+    margin-top: 10px;
+    border-radius: 10px;
+    display: none;
+}
+
+.quiz-option {
+    padding: 10px;
+    margin: 8px 0;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #f8f8f8;
+    cursor: pointer;
+    text-align: left;
+}
+
+.quiz-option.correct {
+    background: #c8ffc8;
+    border-color: green;
+}
+
+.quiz-option.wrong {
+    background: #ffc8c8;
+    border-color: red;
+}
