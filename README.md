@@ -4,6 +4,15 @@ AI Öğrenci Asistanı; teknik soruları yanıtlayan, gerekirse Gemini kullanara
 
 Bu doküman, projeyi **cloneladıktan sonra nasıl çalıştıracağınızı** eksiksiz şekilde anlatır.
 
+## 🎥 Uygulama Demo Videosu
+
+[YouTube’da İzle →](https://youtu.be/o7SLeNDp67c?si=ZJFzKeVUcqQjTsCB)
+
+<a href="https://youtu.be/o7SLeNDp67c?si=ZJFzKeVUcqQjTsCB" target="_blank">
+    <img src="https://img.youtube.com/vi/o7SLeNDp67c/hqdefault.jpg" width="500">
+</a>
+
+
 ---
 
 # 📁 1. Proje Klasör Yapısı
