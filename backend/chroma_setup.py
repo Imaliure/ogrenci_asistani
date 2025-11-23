@@ -1,4 +1,4 @@
-# chroma_setup.py
+# backend/chroma_setup.py
 import json
 import uuid
 from chromadb import PersistentClient
@@ -7,14 +7,14 @@ from sentence_transformers import SentenceTransformer
 
 # ✅ Model ve ChromaDB başlat
 model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
-client = PersistentClient(path="chroma_db")
+client = PersistentClient(path="../data/chroma_db")
 
 # ✅ Koleksiyonları oluştur
 questions_collection = client.get_or_create_collection("questions")
 keywords_collection = client.get_or_create_collection("ml_keywords")
 
 # ✅ JSON'u yükle
-with open("data.json", "r", encoding="utf-8") as f:
+with open("./data/data.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
 

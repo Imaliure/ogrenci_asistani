@@ -2,7 +2,7 @@
 import re
 import string
 
-from anahtar_kelimeler import A
+from data.anahtar_kelimeler import A
 
 def preprocess_text(text: str) -> str:
     # Manuel Türkçe stopword listesi

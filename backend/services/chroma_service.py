@@ -1,4 +1,4 @@
-# services/chroma_service.py
+# backend/services/chroma_service.py
 import os
 import uuid
 from chromadb import PersistentClient
@@ -8,7 +8,7 @@ import torch
 from chromadb.config import Settings
 from utils.preprocessing import preprocess_text
 
-client = PersistentClient(path="chroma_db",settings=Settings(anonymized_telemetry=False))
+client = PersistentClient(path="../data/chroma_db",settings=Settings(anonymized_telemetry=False))
 
 collection = client.get_or_create_collection("questions")
 alt_collection = client.get_or_create_collection("alternative_answers")
